@@ -4,6 +4,7 @@ const app = express();
 const mongoose = require("mongoose");
 const Listing = require("./models/listing.js");
 const path = require("path");
+const methodOverride = require("method-override");
 
 main().catch((err) => console.log(err));
 
@@ -14,6 +15,7 @@ async function main() {
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 app.use(express.urlencoded({ extended: true }));
+app.use(methodOverride("_method"));
 
 app.get("/", (req, res) => {
   console.log("you are on root");
@@ -47,7 +49,7 @@ app.get("/listings/new", (req, res) => {
 // show route
 app.get("/listings/:id", async (req, res) => {
   let { id } = req.params;
-  console.log(id);
+  //   console.log(id);
   let listing = await Listing.findById(id);
   res.render("listings/show.ejs", { listing });
 });
@@ -57,6 +59,22 @@ app.post("/listings", async (req, res) => {
   let newListing = new Listing(req.body.listing);
   await newListing.save();
   res.redirect("/listings");
+});
+
+// edit form route
+app.get("/listings/:id/edit", async (req, res) => {
+  let { id } = req.params;
+  let listing = await Listing.findById(id);
+  res.render("listings/edit.ejs", { listing });
+});
+
+// edit route
+app.put("/listings/:id", async (req, res) => {
+  //   console.log("put req received");
+  let { id } = req.params;
+  let newListing = req.body.listing;
+  await Listing.findByIdAndUpdate(id, newListing);
+  res.redirect(`/listings/${id}`);
 });
 
 app.listen(port, () => {
