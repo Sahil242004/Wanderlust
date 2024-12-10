@@ -3,6 +3,7 @@ const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
 const Listing = require("./models/listing.js");
+const path = require("path");
 
 main().catch((err) => console.log(err));
 
@@ -10,22 +11,30 @@ async function main() {
   await mongoose.connect("mongodb://127.0.0.1:27017/wanderLust");
 }
 
+app.set("view engine", "ejs");
+app.set("views", path.join(__dirname, "views"));
+
 app.get("/", (req, res) => {
   console.log("you are on root");
   res.send("you are on root");
 });
 
-app.get("/testListing", async (req, res) => {
-  let trialListing = new Listing({
-    title: "Sahil's house",
-    description: "Hello World",
-    price: 20000,
-    location: "Hadapsar",
-    country: "India",
-  });
-  await trialListing.save();
-  console.log("trial listing was saved");
-  res.send("successfull testing");
+// app.get("/testListing", async (req, res) => {
+//   let trialListing = new Listing({
+//     title: "Sahil's house",
+//     description: "Hello World",
+//     price: 20000,
+//     location: "Hadapsar",
+//     country: "India",
+//   });
+//   await trialListing.save();
+//   console.log("trial listing was saved");
+//   res.send("successfull testing");
+// });
+
+app.get("/listings", async (req, res) => {
+  const allListings = await Listing.find();
+  res.render("listings/index.ejs", { allListings });
 });
 
 app.listen(port, () => {
