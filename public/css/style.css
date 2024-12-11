@@ -1,9 +1,13 @@
-/* body {
-  background-color: pink;
-} */
+body {
+  font-family: "Plus Jakarta Sans", sans-serif !important;
+}
 
 .navbar {
   height: 5rem;
+  background-color: white !important;
+}
+
+.collapse {
   background-color: white !important;
 }
 
@@ -37,4 +41,33 @@
 }
 .name {
   width: 100%;
+}
+
+/* cards */
+.card {
+  border: 0 !important;
+  margin-bottom: 2rem !important;
+  margin-top: 1rem !important;
+  /* box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); */
+  /* transition: transform 0.3s, box-shadow 0.3s; */
+}
+
+.card-img-top {
+  border-radius: 1rem !important;
+  width: 100% !important;
+  object-fit: cover !important;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.card-img-top:hover {
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
+  transform: translateY(-10px) scale(1.05);
+}
+
+.card-body {
+  padding: 0 !important;
+}
+
+.card-anchor {
+  text-decoration: none !important;
 }
