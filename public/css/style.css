@@ -1,5 +1,12 @@
 body {
   font-family: "Plus Jakarta Sans", sans-serif !important;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.conatiner {
+  flex: 1;
 }
 
 .navbar {
@@ -35,9 +42,11 @@ body {
 
 .f-info-social {
   width: 100%;
+  margin-top: 10px;
 }
 .f-links {
   width: 100%;
+  margin-bottom: 10px;
 }
 .name {
   width: 100%;
