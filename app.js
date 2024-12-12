@@ -76,6 +76,7 @@ app.put("/listings/:id", async (req, res) => {
   //   console.log("put req received");
   let { id } = req.params;
   let newListing = req.body.listing;
+  // console.log(newListing);
   await Listing.findByIdAndUpdate(id, newListing);
   res.redirect(`/listings/${id}`);
 });

@@ -1,39 +1,83 @@
 <% layout("/layouts/boilerPlate") %>
 <body>
-  <h3>Edit Listing</h3>
-  <form method="post" , action="/listings/<%=listing._id%>?_method=PUT">
-    <input
-      type="text"
-      name="listing[title]"
-      value="<%=listing.title%>"
-    /><br /><br />
-    <textarea
-      name="listing[description]"
-      placeholder="Enter Description"
-      style="height: 100px; width: 300px"
-    >
-<%=listing.description%></textarea
-    ><br /><br />
-    <input
-      type="text"
-      name="listing[image.url]"
-      value="<%=listing.image.url%>"
-    /><br /><br />
-    <input
-      type="number"
-      name="listing[price]"
-      value="<%=listing.price%>"
-    /><br /><br />
-    <input
-      type="text"
-      name="listing[location]"
-      value="<%=listing.location%>"
-    /><br /><br />
-    <input
-      type="text"
-      name="listing[country]"
-      value="<%=listing.country%>"
-    /><br /><br />
-    <button>Edit Listing</button>
-  </form>
+  <div class="row">
+    <div class="col-8 offset-2">
+      <h3>Edit Listing</h3>
+      <form method="post" , action="/listings/<%=listing._id%>?_method=PUT">
+        <div class="mb-3">
+          <label for="title" class="form-label">Title :</label>
+          <input
+            type="text"
+            name="listing[title]"
+            value="<%=listing.title%>"
+            class="form-control"
+            id="title"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label for="description" class="form-label">Description :</label>
+          <textarea
+            name="listing[description]"
+            placeholder="Enter Description"
+            style="height: 100px"
+            class="form-control"
+            id="description"
+          >
+          <%=listing.description%></textarea
+          >
+        </div>
+
+        <div class="mb-3">
+          <label for="image" class="form-label">Image :</label>
+          <input
+            type="text"
+            name="listing[image][url]"
+            value="<%=listing.image.url%>"
+            class="form-control"
+            id="image"
+          />
+        </div>
+
+        <!-- ------------------------------------ -->
+        <div class="row">
+          <div class="mb-3 col-lg-3">
+            <label for="price" class="form-label">Price :</label>
+            <input
+              type="number"
+              name="listing[price]"
+              value="<%=listing.price%>"
+              class="form-control"
+              id="price"
+            />
+          </div>
+
+          <div class="mb-3 col-lg-9">
+            <label for="location" class="form-label">Location :</label>
+            <input
+              type="text"
+              name="listing[location]"
+              value="<%=listing.location%>"
+              class="form-control"
+              id="location"
+            />
+          </div>
+        </div>
+        <!-- ------------------------------------------------ -->
+
+        <div class="mb-5">
+          <label for="country" class="form-label">Country :</label>
+          <input
+            type="text"
+            name="listing[country]"
+            value="<%=listing.country%>"
+            class="form-control"
+            id="country"
+          />
+        </div>
+
+        <button class="btn btn-light mb-5">Edit Listing</button>
+      </form>
+    </div>
+  </div>
 </body>
