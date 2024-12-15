@@ -9,6 +9,7 @@ const ejsMate = require("ejs-mate");
 const wrapAsync = require("./utils/wrapAsync.js");
 const customError = require("./utils/customError.js");
 const schema = require("./schema.js");
+const Review = require("./models/review.js");
 
 main().catch((err) => console.log(err));
 
@@ -131,6 +132,21 @@ app.delete(
     res.redirect("/listings");
   })
 );
+
+// reviews ----------------------
+
+app.post("/listings/:id/review", async (req, res) => {
+  let { id } = req.params;
+  let listing = await Listing.findById(id);
+  let newReview = new Review(req.body.review);
+  console.log(newReview);
+
+  listing.review.push(newReview);
+
+  await newReview.save();
+  await listing.save();
+  res.redirect(`/listings/${listing._id}`);
+});
 
 // error middleware
 
