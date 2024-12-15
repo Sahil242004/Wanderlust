@@ -10,8 +10,6 @@ const wrapAsync = require("./utils/wrapAsync.js");
 const customError = require("./utils/customError.js");
 const { listingSchema, reviewSchema } = require("./schema.js");
 const Review = require("./models/review.js");
-console.log(listingSchema);
-console.log(reviewSchema);
 
 main().catch((err) => console.log(err));
 
@@ -32,7 +30,7 @@ app.get("/", (req, res) => {
 });
 
 validateListing = (req, res, next) => {
-  console.log(req.body);
+  // console.log(req.body);
   let { error } = listingSchema.validate(req.body);
   if (error) {
     console.log("error from validte listing function");
@@ -45,14 +43,14 @@ validateListing = (req, res, next) => {
 };
 
 validateReview = (req, res, next) => {
-  console.log(req.body);
-  let resss = reviewSchema.validate(req.body);
-  console.log(resss);
+  // console.log(req.body);
+  // let resss = reviewSchema.validate(req.body);
+  // console.log(resss);
   let { error } = reviewSchema.validate(req.body);
   if (error) {
     console.log("error from validte listing function");
     let errMsg = error.details.map((el) => el.message).join(",");
-    console.log(errMsg);
+    // console.log(errMsg);
     throw new customError(400, errMsg);
   } else {
     next();
@@ -151,24 +149,35 @@ app.delete(
 );
 
 // reviews -------------------------------------------------------------------------------------
-
+// post review
 app.post(
   "/listings/:id/review",
   validateReview,
   wrapAsync(async (req, res) => {
-    console.log("inside route");
+    // console.log("inside route");
     let { id } = req.params;
     let listing = await Listing.findById(id);
-    console.log("Printing req body");
-    console.log(req.body);
+    // console.log("Printing req body");
+    // console.log(req.body);
     let newReview = new Review(req.body.review);
-    console.log(newReview);
+    // console.log(newReview);
 
     listing.review.push(newReview);
 
     await newReview.save();
     await listing.save();
     res.redirect(`/listings/${listing._id}`);
+  })
+);
+
+// delete review
+app.delete(
+  "/listings/:id/review/:reviewId",
+  wrapAsync(async (req, res) => {
+    let { id, reviewId } = req.params;
+    await Listing.findByIdAndUpdate(id, { $pull: { reviews: reviewId } });
+    await Review.findByIdAndDelete(reviewId);
+    res.redirect(`/listings/${id}`);
   })
 );
 
