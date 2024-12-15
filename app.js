@@ -92,7 +92,7 @@ app.get(
   wrapAsync(async (req, res) => {
     let { id } = req.params;
     //   console.log(id);
-    let listing = await Listing.findById(id);
+    let listing = await Listing.findById(id).populate("review");
     res.render("listings/show.ejs", { listing });
   })
 );
