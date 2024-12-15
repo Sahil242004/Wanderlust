@@ -29,6 +29,7 @@ app.get("/", (req, res) => {
 });
 
 validateListing = (req, res, next) => {
+  console.log(req.body);
   let { error } = schema.validate(req.body);
   if (error) {
     console.log("error from validte listing function");
