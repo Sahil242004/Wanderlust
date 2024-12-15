@@ -8,8 +8,10 @@ const methodOverride = require("method-override");
 const ejsMate = require("ejs-mate");
 const wrapAsync = require("./utils/wrapAsync.js");
 const customError = require("./utils/customError.js");
-const schema = require("./schema.js");
+const { listingSchema, reviewSchema } = require("./schema.js");
 const Review = require("./models/review.js");
+console.log(listingSchema);
+console.log(reviewSchema);
 
 main().catch((err) => console.log(err));
 
@@ -31,7 +33,22 @@ app.get("/", (req, res) => {
 
 validateListing = (req, res, next) => {
   console.log(req.body);
-  let { error } = schema.validate(req.body);
+  let { error } = listingSchema.validate(req.body);
+  if (error) {
+    console.log("error from validte listing function");
+    let errMsg = error.details.map((el) => el.message).join(",");
+    console.log(errMsg);
+    throw new customError(400, errMsg);
+  } else {
+    next();
+  }
+};
+
+validateReview = (req, res, next) => {
+  console.log(req.body);
+  let resss = reviewSchema.validate(req.body);
+  console.log(resss);
+  let { error } = reviewSchema.validate(req.body);
   if (error) {
     console.log("error from validte listing function");
     let errMsg = error.details.map((el) => el.message).join(",");
@@ -133,20 +150,27 @@ app.delete(
   })
 );
 
-// reviews ----------------------
+// reviews -------------------------------------------------------------------------------------
 
-app.post("/listings/:id/review", async (req, res) => {
-  let { id } = req.params;
-  let listing = await Listing.findById(id);
-  let newReview = new Review(req.body.review);
-  console.log(newReview);
+app.post(
+  "/listings/:id/review",
+  validateReview,
+  wrapAsync(async (req, res) => {
+    console.log("inside route");
+    let { id } = req.params;
+    let listing = await Listing.findById(id);
+    console.log("Printing req body");
+    console.log(req.body);
+    let newReview = new Review(req.body.review);
+    console.log(newReview);
 
-  listing.review.push(newReview);
+    listing.review.push(newReview);
 
-  await newReview.save();
-  await listing.save();
-  res.redirect(`/listings/${listing._id}`);
-});
+    await newReview.save();
+    await listing.save();
+    res.redirect(`/listings/${listing._id}`);
+  })
+);
 
 // error middleware
 
@@ -156,6 +180,7 @@ app.all("*", (req, res, next) => {
 app.use((err, req, res, next) => {
   let { statusCode = 500, message = "Some error occcured" } = err;
   // res.status(statusCode).send(message);
+  // console.log(err);
   res.status(statusCode).render("error.ejs", { message });
 });
 
