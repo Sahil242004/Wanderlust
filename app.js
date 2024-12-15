@@ -28,6 +28,18 @@ app.get("/", (req, res) => {
   res.send("you are on root");
 });
 
+validateListing = (req, res, next) => {
+  let { error } = schema.validate(req.body);
+  if (error) {
+    console.log("error from validte listing function");
+    let errMsg = error.details.map((el) => el.message).join(",");
+    console.log(errMsg);
+    throw new customError(400, errMsg);
+  } else {
+    next();
+  }
+};
+
 // app.get("/testListing", async (req, res) => {
 //   let trialListing = new Listing({
 //     title: "Sahil's house",
@@ -69,15 +81,12 @@ app.get(
 // create new listing form route
 app.post(
   "/listings",
+  validateListing,
   wrapAsync(async (req, res, next) => {
     // if (!req.body.listing) {
     //   throw new customError(400, "Send valid data for listing");
     // }
-    let result = schema.validate(req.body);
-    console.log(result);
-    if (result.error) {
-      throw new customError(400, result.error);
-    }
+
     let newListing = new Listing(req.body.listing);
     await newListing.save();
     res.redirect("/listings");
@@ -97,11 +106,12 @@ app.get(
 // edit route
 app.put(
   "/listings/:id",
+  validateListing,
   wrapAsync(async (req, res) => {
     //   console.log("put req received");
-    if (!req.body.listing) {
-      throw new customError(400, "Send valid data for listing");
-    }
+    // if (!req.body.listing) {
+    //   throw new customError(400, "Send valid data for listing");
+    // }
     let { id } = req.params;
     let newListing = req.body.listing;
     // console.log(newListing);
