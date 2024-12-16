@@ -2,14 +2,13 @@ const port = 8080;
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
-const Listing = require("./models/listing.js");
 const path = require("path");
 const methodOverride = require("method-override");
 const ejsMate = require("ejs-mate");
-const wrapAsync = require("./utils/wrapAsync.js");
 const customError = require("./utils/customError.js");
-const { listingSchema, reviewSchema } = require("./schema.js");
-const Review = require("./models/review.js");
+
+const listings = require("./routes/listing.js");
+const reviews = require("./routes/review.js");
 
 main().catch((err) => console.log(err));
 
@@ -29,157 +28,8 @@ app.get("/", (req, res) => {
   res.send("you are on root");
 });
 
-validateListing = (req, res, next) => {
-  // console.log(req.body);
-  let { error } = listingSchema.validate(req.body);
-  if (error) {
-    console.log("error from validte listing function");
-    let errMsg = error.details.map((el) => el.message).join(",");
-    console.log(errMsg);
-    throw new customError(400, errMsg);
-  } else {
-    next();
-  }
-};
-
-validateReview = (req, res, next) => {
-  // console.log(req.body);
-  // let resss = reviewSchema.validate(req.body);
-  // console.log(resss);
-  let { error } = reviewSchema.validate(req.body);
-  if (error) {
-    console.log("error from validte listing function");
-    let errMsg = error.details.map((el) => el.message).join(",");
-    // console.log(errMsg);
-    throw new customError(400, errMsg);
-  } else {
-    next();
-  }
-};
-
-// app.get("/testListing", async (req, res) => {
-//   let trialListing = new Listing({
-//     title: "Sahil's house",
-//     description: "Hello World",
-//     price: 20000,
-//     location: "Hadapsar",
-//     country: "India",
-//   });
-//   await trialListing.save();
-//   console.log("trial listing was saved");
-//   res.send("successfull testing");
-// });
-
-// index route
-app.get(
-  "/listings",
-  wrapAsync(async (req, res) => {
-    const allListings = await Listing.find();
-    res.render("listings/index.ejs", { allListings });
-  })
-);
-
-// new listing form route
-app.get("/listings/new", (req, res) => {
-  res.render("listings/newListingForm.ejs");
-});
-
-// show route
-app.get(
-  "/listings/:id",
-  wrapAsync(async (req, res) => {
-    let { id } = req.params;
-    //   console.log(id);
-    let listing = await Listing.findById(id).populate("review");
-    res.render("listings/show.ejs", { listing });
-  })
-);
-
-// create new listing form route
-app.post(
-  "/listings",
-  validateListing,
-  wrapAsync(async (req, res, next) => {
-    // if (!req.body.listing) {
-    //   throw new customError(400, "Send valid data for listing");
-    // }
-
-    let newListing = new Listing(req.body.listing);
-    await newListing.save();
-    res.redirect("/listings");
-  })
-);
-
-// edit form route
-app.get(
-  "/listings/:id/edit",
-  wrapAsync(async (req, res) => {
-    let { id } = req.params;
-    let listing = await Listing.findById(id);
-    res.render("listings/edit.ejs", { listing });
-  })
-);
-
-// edit route
-app.put(
-  "/listings/:id",
-  validateListing,
-  wrapAsync(async (req, res) => {
-    //   console.log("put req received");
-    // if (!req.body.listing) {
-    //   throw new customError(400, "Send valid data for listing");
-    // }
-    let { id } = req.params;
-    let newListing = req.body.listing;
-    // console.log(newListing);
-    await Listing.findByIdAndUpdate(id, newListing);
-    res.redirect(`/listings/${id}`);
-  })
-);
-
-// delete listing
-app.delete(
-  "/listings/:id",
-  wrapAsync(async (req, res) => {
-    let { id } = req.params;
-    let delListing = await Listing.findByIdAndDelete(id);
-    console.log(delListing);
-    res.redirect("/listings");
-  })
-);
-
-// reviews -------------------------------------------------------------------------------------
-// post review
-app.post(
-  "/listings/:id/review",
-  validateReview,
-  wrapAsync(async (req, res) => {
-    // console.log("inside route");
-    let { id } = req.params;
-    let listing = await Listing.findById(id);
-    // console.log("Printing req body");
-    // console.log(req.body);
-    let newReview = new Review(req.body.review);
-    // console.log(newReview);
-
-    listing.review.push(newReview);
-
-    await newReview.save();
-    await listing.save();
-    res.redirect(`/listings/${listing._id}`);
-  })
-);
-
-// delete review
-app.delete(
-  "/listings/:id/review/:reviewId",
-  wrapAsync(async (req, res) => {
-    let { id, reviewId } = req.params;
-    await Listing.findByIdAndUpdate(id, { $pull: { reviews: reviewId } });
-    await Review.findByIdAndDelete(reviewId);
-    res.redirect(`/listings/${id}`);
-  })
-);
+app.use("/listings", listings);
+app.use("/listings/:id/review", reviews);
 
 // error middleware
 
