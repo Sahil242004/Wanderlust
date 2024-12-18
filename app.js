@@ -12,8 +12,9 @@ const passport = require("passport");
 const LocalStrategy = require("passport-local");
 const User = require("./models/user.js");
 
-const listings = require("./routes/listing.js");
-const reviews = require("./routes/review.js");
+const listingRouter = require("./routes/listing.js");
+const reviewRouter = require("./routes/review.js");
+const userRouter = require("./routes/user.js");
 
 const sessionVariables = {
   secret: "mysupersecret",
@@ -64,8 +65,9 @@ app.get("/user", async (req, res) => {
   res.send(registeredUser);
 });
 
-app.use("/listings", listings);
-app.use("/listings/:id/review", reviews);
+app.use("/", userRouter);
+app.use("/listings", listingRouter);
+app.use("/listings/:id/review", reviewRouter);
 
 app.get("/", (req, res) => {
   console.log("you are on root");
