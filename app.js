@@ -6,11 +6,12 @@ const path = require("path");
 const methodOverride = require("method-override");
 const ejsMate = require("ejs-mate");
 const customError = require("./utils/customError.js");
+const session = require("express-session");
+const flash = require("connect-flash");
 
 const listings = require("./routes/listing.js");
 const reviews = require("./routes/review.js");
 
-const session = require("express-session");
 const sessionVariables = {
   secret: "mysupersecret",
   resave: false,
@@ -21,8 +22,6 @@ const sessionVariables = {
     httpOnly: true,
   },
 };
-
-app.use(session(sessionVariables));
 
 main().catch((err) => console.log(err));
 
@@ -40,6 +39,15 @@ app.use(methodOverride("_method"));
 app.get("/", (req, res) => {
   console.log("you are on root");
   res.send("you are on root");
+});
+
+app.use(flash());
+app.use(session(sessionVariables));
+app.use((req, res, next) => {
+  // console.log(req.flash("success"));
+  res.locals.success = req.flash("success");
+  res.locals.error = req.flash("error");
+  next();
 });
 
 app.use("/listings", listings);
