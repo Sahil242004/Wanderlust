@@ -8,6 +8,9 @@ const ejsMate = require("ejs-mate");
 const customError = require("./utils/customError.js");
 const session = require("express-session");
 const flash = require("connect-flash");
+const passport = require("passport");
+const LocalStrategy = require("passport-local");
+const User = require("./models/user.js");
 
 const listings = require("./routes/listing.js");
 const reviews = require("./routes/review.js");
@@ -36,13 +39,14 @@ app.set("views", path.join(__dirname, "views"));
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
 
-app.get("/", (req, res) => {
-  console.log("you are on root");
-  res.send("you are on root");
-});
-
 app.use(flash());
 app.use(session(sessionVariables));
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new LocalStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
 app.use((req, res, next) => {
   // console.log(req.flash("success"));
   res.locals.success = req.flash("success");
@@ -50,8 +54,23 @@ app.use((req, res, next) => {
   next();
 });
 
+app.get("/user", async (req, res) => {
+  let fakeUser = new User({
+    email: "studdent@gmail.com",
+    username: "sahil-bhagwat",
+  });
+
+  let registeredUser = await User.register(fakeUser, "password");
+  res.send(registeredUser);
+});
+
 app.use("/listings", listings);
 app.use("/listings/:id/review", reviews);
+
+app.get("/", (req, res) => {
+  console.log("you are on root");
+  res.send("you are on root");
+});
 
 // error middleware
 
