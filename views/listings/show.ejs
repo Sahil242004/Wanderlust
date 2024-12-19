@@ -92,12 +92,13 @@
         <% for(review of listing.review) {%>
         <div class="card col-5 p-3 mt-2 ms-3">
           <div class="card-body">
-            <h5 class="card-title">Sahil Bhagwat</h5>
+            <h5 class="card-title">@<%=review.author.username%></h5>
             <p class="card-text">
               <%=review.comment%><br /><%=review.rating%>
               <i class="bi bi-star-fill"></i>
             </p>
           </div>
+          <% if(review.author._id.equals(currUser._id)) { %>
           <form
             class="mt-2 mb-1"
             method="post"
@@ -105,6 +106,7 @@
           >
             <button class="btn btn-sm btn-light">Delete</button>
           </form>
+          <% } %>
         </div>
 
         <% } %>

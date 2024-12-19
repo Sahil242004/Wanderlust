@@ -27,7 +27,7 @@ router.get(
     let { id } = req.params;
     //   console.log(id);
     let listing = await Listing.findById(id)
-      .populate("review")
+      .populate({ path: "review", populate: { path: "author" } })
       .populate("owner");
     if (!listing) {
       req.flash("error", "No Such Listing Exists!");
