@@ -20,8 +20,13 @@ router.post(
 
       let registeredUser = await User.register(newUser, password);
       console.log(registeredUser);
-      req.flash("success", "Welcome to WanderLust!");
-      res.redirect("/listings");
+      req.login(registeredUser, (err) => {
+        if (err) {
+          return next(err);
+        }
+        req.flash("success", "Welcome to WanderLust!");
+        res.redirect("/listings");
+      });
     } catch (e) {
       req.flash("error", "User already exists");
       res.redirect("/signUp");
