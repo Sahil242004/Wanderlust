@@ -28,7 +28,7 @@
         </div>
       </div>
       <!-- card end -->
-
+      <% if(currUser && listing.owner._id.equals(currUser._id)) { %>
       <div class="row justify-content-center mb-5">
         <div class="col-lg-2 col-md-2 mt-2">
           <form method="get" , action="/listings/<%=listing._id%>/edit">
@@ -45,10 +45,12 @@
           </form>
         </div>
       </div>
+      <% } %>
     </div>
     <hr />
 
     <div class="col-8 offset-2 mt-4 mb-5">
+      <%if(currUser) { %>
       <h4 class="mb-3">Leave a review</h4>
       <form
         method="post"
@@ -82,8 +84,8 @@
         </div>
         <button class="btn btn-outline-success mt-3">Submit</button>
       </form>
-
       <hr />
+      <%}%>
 
       <p><b>All Reviews</b></p>
       <div class="row">

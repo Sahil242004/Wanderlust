@@ -4,20 +4,20 @@ const wrapAsync = require("../utils/wrapAsync.js");
 const customError = require("../utils/customError.js");
 const Review = require("../models/review.js");
 const Listing = require("../models/listing.js");
-const { validateReview } = require("../middleware.js");
+const { validateReview, isLoggedIn } = require("../middleware.js");
 
 // post review
 router.post(
   "",
+  isLoggedIn,
   validateReview,
   wrapAsync(async (req, res) => {
     // console.log("inside route");
     let { id } = req.params;
     let listing = await Listing.findById(id);
-    // console.log("Printing req body");
-    // console.log(req.body);
     let newReview = new Review(req.body.review);
-    // console.log(newReview);
+    newReview.author = req.user._id;
+    console.log(newReview);
 
     listing.review.push(newReview);
 
