@@ -39,7 +39,9 @@ router.get(
   wrapAsync(async (req, res) => {
     let { id } = req.params;
     //   console.log(id);
-    let listing = await Listing.findById(id).populate("review");
+    let listing = await Listing.findById(id)
+      .populate("review")
+      .populate("owner");
     if (!listing) {
       req.flash("error", "No Such Listing Exists!");
       res.redirect("/listings");
@@ -59,6 +61,7 @@ router.post(
     // }
 
     let newListing = new Listing(req.body.listing);
+    newListing.owner = req.user._id;
     await newListing.save();
     req.flash("success", "New Listing Created!");
     res.redirect("/listings");
