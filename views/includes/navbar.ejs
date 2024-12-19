@@ -23,11 +23,17 @@
         <a class="nav-link" href="/listings/new">Add New Listings</a>
       </div>
     </div>
+    <% if(!currUser) { %>
     <div class="d-flex me-3 signupLink">
       <a class="nav-link" href="/signUp">SignUp</a>
     </div>
     <div class="d-flex me-5 loginLink">
       <a class="nav-link" href="/logIn">LogIn</a>
     </div>
+    <%}%> <% if(currUser) { %>
+    <div class="d-flex me-5 loginLink">
+      <a class="nav-link" href="/logOut">Log Out</a>
+    </div>
+    <%}%>
   </div>
 </nav>
