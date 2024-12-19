@@ -2,24 +2,9 @@ const express = require("express");
 const router = express.Router({ mergeParams: true });
 const wrapAsync = require("../utils/wrapAsync.js");
 const customError = require("../utils/customError.js");
-const { reviewSchema } = require("../schema.js");
 const Review = require("../models/review.js");
 const Listing = require("../models/listing.js");
-
-validateReview = (req, res, next) => {
-  // console.log(req.body);
-  // let resss = reviewSchema.validate(req.body);
-  // console.log(resss);
-  let { error } = reviewSchema.validate(req.body);
-  if (error) {
-    console.log("error from validte listing function");
-    let errMsg = error.details.map((el) => el.message).join(",");
-    // console.log(errMsg);
-    throw new customError(400, errMsg);
-  } else {
-    next();
-  }
-};
+const { validateReview } = require("../middleware.js");
 
 // post review
 router.post(

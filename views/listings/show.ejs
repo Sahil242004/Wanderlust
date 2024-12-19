@@ -28,7 +28,7 @@
         </div>
       </div>
       <!-- card end -->
-      <% if(currUser && currUser._id.equals(listing.owner._id)) {%>
+
       <div class="row justify-content-center mb-5">
         <div class="col-lg-2 col-md-2 mt-2">
           <form method="get" , action="/listings/<%=listing._id%>/edit">
@@ -45,7 +45,6 @@
           </form>
         </div>
       </div>
-      <%}%>
     </div>
     <hr />
 
