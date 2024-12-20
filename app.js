@@ -1,5 +1,5 @@
 require("dotenv").config();
-console.log(process.env.SECRET);
+// console.log(process.env.SECRET);
 
 const port = 8080;
 const express = require("express");
