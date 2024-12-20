@@ -6,12 +6,19 @@ const customError = require("../utils/customError.js");
 const Listing = require("../models/listing.js");
 const { isLoggedIn, isOwner, validateListing } = require("../middleware.js");
 const listingController = require("../controllers/listing.js");
+const multer = require("multer");
+const upload = multer({ dest: "uploads/" });
 
 // index route and create new listing route
 router
   .route("")
   .get(wrapAsync(listingController.index))
-  .post(validateListing, wrapAsync(listingController.makeNewListing));
+  // .post(validateListing, wrapAsync(listingController.makeNewListing));
+  .post(upload.single("listing[image][url]"), (req, res) => {
+    console.log("ost req for file received");
+    console.log(req.file);
+    res.send(req.file);
+  });
 
 // new listing form route
 router.get("/new", isLoggedIn, listingController.renderNewListingForm);

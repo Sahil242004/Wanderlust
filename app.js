@@ -11,6 +11,8 @@ const flash = require("connect-flash");
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
 const User = require("./models/user.js");
+const multer = require("multer");
+const upload = multer({ dest: "uploads/" });
 
 const listingRouter = require("./routes/listing.js");
 const reviewRouter = require("./routes/review.js");
@@ -84,6 +86,7 @@ app.use((err, req, res, next) => {
   let { statusCode = 500, message = "Some error occcured" } = err;
   // res.status(statusCode).send(message);
   // console.log(err);
+  console.log(err.stack);
   res.status(statusCode).render("error.ejs", { message });
 });
 
