@@ -14,7 +14,7 @@ const initDb = async () => {
 
   initData.data = initData.data.map((obj) => ({
     ...obj,
-    owner: "6763017c23875b1521b79938",
+    owner: "6765b0aa78aba49678c3392e",
   }));
 
   // inserting data
