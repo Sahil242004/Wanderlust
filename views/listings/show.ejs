@@ -98,7 +98,7 @@
               <i class="bi bi-star-fill"></i>
             </p>
           </div>
-          <% if(review.author._id.equals(currUser._id)) { %>
+          <% if(currUser && review.author._id.equals(currUser._id)) { %>
           <form
             class="mt-2 mb-1"
             method="post"
