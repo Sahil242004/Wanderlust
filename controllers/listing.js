@@ -41,11 +41,14 @@ module.exports.makeNewListing = async (req, res, next) => {
 module.exports.editListingForm = async (req, res) => {
   let { id } = req.params;
   let listing = await Listing.findById(id);
+  let originalImage = listing.image.url;
+  originalImage = originalImage.replace("/upload", "/upload/h_300,w_450");
+  // console.log(originalImage);
   if (!listing) {
     req.flash("error", "No Such Listing Exists!");
     res.redirect("/listings");
   } else {
-    res.render("listings/edit.ejs", { listing });
+    res.render("listings/edit.ejs", { listing, originalImage });
   }
 };
 
