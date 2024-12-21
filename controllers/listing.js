@@ -55,9 +55,13 @@ module.exports.editListing = async (req, res) => {
   //   throw new customError(400, "Send valid data for listing");
   // }
   let { id } = req.params;
-  let newListing = req.body.listing;
-  // console.log(newListing);
-  await Listing.findByIdAndUpdate(id, newListing);
+  let newListing = await Listing.findByIdAndUpdate(id, { ...req.body.listing });
+  if (typeof req.file != "undefined") {
+    let url = req.file.path;
+    let filename = req.file.filename;
+    newListing.image = { filename, url };
+    await newListing.save();
+  }
   req.flash("success", "Listing Edited!");
   res.redirect(`/listings/${id}`);
 };

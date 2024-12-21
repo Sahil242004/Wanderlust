@@ -7,6 +7,7 @@
         method="post"
         class="needs-validation"
         action="/listings/<%=listing._id%>?_method=PUT"
+        enctype="multipart/form-data"
         novalidate
       >
         <div class="mb-3">
@@ -38,12 +39,10 @@
         <div class="mb-3">
           <label for="image" class="form-label">Image :</label>
           <input
-            type="text"
+            type="file"
             name="listing[image][url]"
-            value="<%=listing.image.url%>"
             class="form-control"
             id="image"
-            required
           />
         </div>
 
