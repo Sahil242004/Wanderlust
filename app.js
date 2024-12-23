@@ -75,10 +75,10 @@ app.use("/", userRouter);
 app.use("/listings", listingRouter);
 app.use("/listings/:id/review", reviewRouter);
 
-app.get("/", (req, res) => {
-  console.log("you are on root");
-  res.send("you are on root");
-});
+// app.get("/", (req, res) => {
+//   console.log("you are on root");
+//   res.send("you are on root");
+// });
 
 // error middleware
 

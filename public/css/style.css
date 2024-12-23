@@ -104,6 +104,11 @@ body {
   text-decoration: underline;
 }
 
+/* .loginLink {
+  font-weight: 550;
+  opacity: 10;
+} */
+
 .loginLink:hover {
   text-decoration: underline;
 }
