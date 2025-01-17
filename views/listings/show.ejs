@@ -49,7 +49,7 @@
     </div>
     <hr />
 
-    <div class="col-8 offset-2 mt-3 mb-5">
+    <div class="col-8 offset-2 mt-3 mb-3 mb-5">
       <%if(currUser) { %>
       <!-- <h4 class="mb-3">Leave a review</h4> -->
       <form
@@ -63,6 +63,7 @@
         <div>
           <fieldset class="starability-slot">
             <legend>Give a review</legend>
+            <!-- <h4>leave a review</h4> -->
             <br /><br />
             <input
               type="radio"
@@ -125,34 +126,53 @@
         </div>
         <button class="btn btn-outline-success mt-3">Submit</button>
       </form>
-      <hr />
+      <hr class="mb-5 mt-5" />
       <%}%>
 
       <!-- Reviews -->
-      <% if(listing.review && listing.review.length) {%>
-      <p><b>All Reviews</b></p>
+      <% if(listing.review && listing.review.length>0) {%>
 
-      <div class="row">
-        <% for(review of listing.review) {%>
-        <div class="card col-5 p-3 mt-2 ms-3">
-          <div class="card-body">
-            <h5 class="card-title">@<%=review.author.username%></h5>
-            <p class="card-text">
-              <%=review.comment%><br /><%=review.rating%>
-              <i class="bi bi-star-fill"></i>
+      <div class="mt-2">
+        <legend>Reviews</legend>
+        <br /><br />
+        <% for(review of listing.review) { %>
+        <div class="reviewCard" style="margin-bottom: 1.5rem">
+          <div class="review-content">
+            <h5
+              class="card-body"
+              style="padding-bottom: 0px; padding-top: 5px; margin-bottom: 0px"
+            >
+              <%for(let i = 0; i < review.rating; i++) {%>
+              <i class="fa-solid fa-star" style="font-size: 1rem"></i>
+              <% } %>
+              <!-- <p class="starability-result" data-rating="<%=review.rating%>">
+                    Rated: 3 stars
+                  </p> -->
+              <!-- <%=review.rating%> -->
+            </h5>
+            <p
+              class="card-text"
+              style="
+                padding-top: 5px;
+                margin-top: 0px;
+                font-size: 1rem;
+                padding-bottom: 0px;
+                margin-bottom: 5px;
+              "
+            >
+              <%=review.comment%>
             </p>
+            <% if(currUser && review.author._id.equals(currUser._id)) { %>
+            <div class="review-actions">
+              <a
+                href="/listings/<%=listing._id%>/review/<%=review._id%>/delete"
+                style="color: black; font-size: 13px"
+                >Delete review</a
+              >
+            </div>
+            <% } %>
           </div>
-          <% if(currUser && review.author._id.equals(currUser._id)) { %>
-          <form
-            class="mt-2 mb-1"
-            method="post"
-            action="/listings/<%=listing._id%>/review/<%=review._id%>?_method=DELETE"
-          >
-            <button class="btn btn-sm btn-light">Delete</button>
-          </form>
-          <% } %>
         </div>
-
         <% } %>
       </div>
       <% } %>
