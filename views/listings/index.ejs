@@ -21,6 +21,7 @@
       display: none;
     }
     .tax-toggle {
+      cursor: pointer;
       opacity: 0.9;
       border: 1px solid black;
       border-radius: 0.8rem;
@@ -89,15 +90,19 @@
     </div> -->
 
     <div class="tax-toggle">
-      <div class="form-check-reverse form-switch">
+      <div class="form-check-reverse form-switch" style="cursor: pointer">
         <input
+          style="cursor: pointer"
           class="form-check-input"
           id="tax-switch"
           type="checkbox"
           role="switch"
           id="flexSwitchCheckDefault"
         />
-        <label class="form-check-label" for="flexSwitchCheckDefault"
+        <label
+          class="form-check-label"
+          style="cursor: pointer"
+          for="flexSwitchCheckDefault"
           >Total Price after tax</label
         >
       </div>

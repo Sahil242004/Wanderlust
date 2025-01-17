@@ -1,3 +1,136 @@
+<style>
+  .search {
+    margin-left: 20rem !important;
+  }
+
+  .search-bar {
+    background-color: white;
+    height: 2.5rem;
+    width: 36rem;
+    border-radius: 2.2rem;
+    display: flex;
+    margin-left: 10rem;
+    /* border: 1px so; */
+    /* box-shadow: 1px 4px 6px rgba(0, 0, 0, 0.1); */
+    /* box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); */
+    box-shadow: 0 0 10px 0.1px rgba(0, 0, 0, 0.2); /* Blurred shadow in all directions */
+  }
+  .where {
+    background-color: white;
+    width: 11rem;
+    height: 2.5rem;
+    z-index: 2;
+    border-radius: 2.2rem;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    justify-content: center;
+  }
+  .where p {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+  }
+  .where:hover {
+    background-color: rgb(239, 238, 238);
+  }
+
+  .who {
+    background-color: white;
+    width: 11rem;
+    height: 2.5rem;
+    z-index: 2;
+    cursor: pointer;
+    margin-left: auto;
+    /* border-left: 2px solid black; */
+    border-radius: 2.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .who:hover {
+    background-color: rgb(239, 238, 238);
+  }
+  .who-text {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 5rem;
+    cursor: pointer;
+    margin-left: 2.5rem;
+  }
+  .who-text p {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+  }
+  .who-icon {
+    cursor: pointer;
+    background-color: red;
+    height: 1.8rem;
+    width: 1.8rem;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 3;
+    margin-left: 1rem;
+  }
+  .who-icon:hover {
+    background-color: rgb(227, 7, 7);
+  }
+  .who-icon i {
+    color: white;
+    border-radius: 50%;
+    z-index: 3;
+  }
+  .checkin {
+    background-color: white;
+    width: 7rem;
+    height: 2.5rem;
+    z-index: 2;
+    margin-left: auto;
+    border-radius: 2.2rem;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    justify-content: center;
+  }
+  .checkin p {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+  }
+  .checkin:hover {
+    background-color: rgb(239, 238, 238);
+  }
+
+  .checkout {
+    background-color: white;
+    /* border-left: 1px solid black; */
+    cursor: pointer;
+    width: 7rem;
+    height: 2.5rem;
+    z-index: 2;
+    margin-left: auto;
+    border-radius: 2.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .checkout p {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+  }
+  .checkout:hover {
+    background-color: rgb(239, 238, 238);
+  }
+</style>
 <nav
   class="navbar navbar-expand-lg bg-body-light border-bottom sticky-top mb-3"
 >
@@ -24,7 +157,38 @@
         <a class="nav-link" href="/listings">Explore</a>
         <a class="nav-link" href="/listings/new">Add New Listings</a>
       </div>
+      <!-- <form class="d-flex search" role="search">
+        <input
+          class="form-control me-2"
+          type="search"
+          placeholder="Search"
+          aria-label="Search"
+        />
+        <button class="btn btn-outline-success mb-auto" type="submit">
+          Search
+        </button>
+      </form> -->
+      <div class="search-bar">
+        <div class="where">
+          <p>Where</p>
+        </div>
+        <div class="checkin">
+          <p>Check in</p>
+        </div>
+        <div class="checkout">
+          <p>Check out</p>
+        </div>
+        <div class="who">
+          <div class="who-text">
+            <p>who</p>
+          </div>
+          <div class="who-icon">
+            <i class="fa-solid fa-magnifying-glass"></i>
+          </div>
+        </div>
+      </div>
     </div>
+
     <% if(!currUser) { %>
     <div class="d-flex me-3 signupLink">
       <a class="nav-link" href="/signUp">SignUp</a>
