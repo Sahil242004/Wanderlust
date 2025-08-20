@@ -10,7 +10,6 @@ Wanderlust is a travel and stay booking web application built with Node.js, Expr
 - [Tech Stack](#tech-stack)
 - [Features](#features)
 - [Run Locally](#run-locally)
-- [Folder Structure](#folder-structure)
 - [Screenshots](#screenshots)
 
 ## Demo
